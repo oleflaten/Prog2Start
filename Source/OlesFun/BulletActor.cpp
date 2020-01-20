@@ -52,7 +52,7 @@ void ABulletActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
     /*Things to come
     //if (OtherActor->IsA(AEnemy::StaticClass()))
     //{
-    //    Cast<AEnemy>(OtherActor)->ImHit(); //OtherActor->Destroy();
+    //    Cast<AEnemy>(OtherActor)->ImHit(); // or OtherActor->Destroy();
     //    //PartikkelFX:
     //    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplotionFX, GetTransform(), true);
 

@@ -21,6 +21,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	float MaxForce = 10000.f;
 
+	UPROPERTY(EditAnywhere, Category = "The Bullet")
+	TSubclassOf<class ABulletActor> BulletBlueprint;	//The blueprint version of the bullet - hopefully with a visible mesh!
+
+	UPROPERTY(EditAnywhere, Category = "The Bullet")
+	float BulletSpawnDistance = 1.f;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -34,4 +40,5 @@ private:
 	void MoveLeft();
 	void MoveForward();
 	void MoveBackward();
+	void Shoot();
 };
