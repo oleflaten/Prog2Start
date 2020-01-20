@@ -14,6 +14,8 @@ class OLESFUN_API APlayerActor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	APlayerActor();
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* OurVisibleMesh;
@@ -27,13 +29,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "The Bullet")
 	float BulletSpawnDistance = 1.f;
 
+	UPROPERTY(EditAnywhere, Category = "Our Camera")
+	AActor* OurCamera;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 private:
 	void MoveRight();

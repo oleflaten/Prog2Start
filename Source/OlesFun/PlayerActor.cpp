@@ -6,6 +6,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Components/InputComponent.h"
 #include "BulletActor.h"
+#include "GameFramework/PlayerController.h"
 
 // Sets default values
 APlayerActor::APlayerActor()
@@ -26,6 +27,9 @@ void APlayerActor::BeginPlay()
 
 	APlayerController* OurPlayerController = GetWorld()->GetFirstPlayerController();
 	EnableInput(OurPlayerController);
+
+	if (OurCamera)
+		OurPlayerController->SetViewTarget(OurCamera);
 
 	InputComponent->BindAction("MoveRight", IE_Repeat, this, &APlayerActor::MoveRight);
 	InputComponent->BindAction("MoveLeft", IE_Repeat, this, &APlayerActor::MoveLeft);
