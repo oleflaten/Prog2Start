@@ -3,6 +3,7 @@
 #include "BulletActor.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "EnemyActor.h"
 
 // Sets default values
 ABulletActor::ABulletActor()
@@ -47,19 +48,21 @@ void ABulletActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 {
     UE_LOG(LogTemp, Warning, TEXT("Bullet Overlaps %s"), *OtherActor->GetName())
  
-    Destroy();
+    if (OtherActor->IsA(AEnemyActor::StaticClass()))
+    {
+        OtherActor->Destroy();
 
-    /*Things to come
-    //if (OtherActor->IsA(AEnemy::StaticClass()))
-    //{
-    //    Cast<AEnemy>(OtherActor)->ImHit(); // or OtherActor->Destroy();
-    //    //PartikkelFX:
+        //Alternative method to inform the enemy that it is hit
+        //For instantce if the enemy has health that should be reduced
+        //Cast<AEnemy>(AEnemyActor)->ImHit();
+
+    //    //PartikkelFX: - you must the set up a ExplotionFX actor first!
     //    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplotionFX, GetTransform(), true);
 
-    //    //SoundFX
+    //    //SoundFX:  - you must the set up a ExplotionSound actor first!
     //    UGameplayStatics::PlaySoundAtLocation(GetWorld(), ExplotionSound, GetActorLocation());
 
-    //    //Destroy Bullet:
-    //    Destroy();
-    //}*/
+        //Destroy Bullet:
+        Destroy();
+    }
 }
