@@ -21,7 +21,7 @@ public:
 	UStaticMeshComponent* OurVisibleMesh;
 
 	UPROPERTY(EditAnywhere)
-	float MaxForce = 10000.f;
+	float MaxSpeed = 200.f;
 
 	UPROPERTY(EditAnywhere, Category = "The Bullet")
 	TSubclassOf<class ABulletActor> BulletBlueprint;	//The blueprint version of the bullet - hopefully with a visible mesh!
@@ -31,6 +31,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Our Camera")
 	AActor* OurCamera;
+
+	UPROPERTY(VisibleAnywhere, Category = "Movement")
+	FVector MovementVector{};
 
 protected:
 	// Called when the game starts or when spawned

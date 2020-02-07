@@ -31,10 +31,10 @@ void APlayerActor::BeginPlay()
 	if (OurCamera)
 		OurPlayerController->SetViewTarget(OurCamera);
 
-	InputComponent->BindAction("MoveRight", IE_Repeat, this, &APlayerActor::MoveRight);
-	InputComponent->BindAction("MoveLeft", IE_Repeat, this, &APlayerActor::MoveLeft);
-	InputComponent->BindAction("MoveForward", IE_Repeat, this, &APlayerActor::MoveForward);
-	InputComponent->BindAction("MoveBackWard", IE_Repeat, this, &APlayerActor::MoveBackward);
+	InputComponent->BindAction("MoveRight", IE_Pressed, this, &APlayerActor::MoveRight);
+	InputComponent->BindAction("MoveLeft", IE_Pressed, this, &APlayerActor::MoveLeft);
+	InputComponent->BindAction("MoveForward", IE_Pressed, this, &APlayerActor::MoveForward);
+	InputComponent->BindAction("MoveBackWard", IE_Pressed, this, &APlayerActor::MoveBackward);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &APlayerActor::Shoot);
 }
 
@@ -42,30 +42,31 @@ void APlayerActor::BeginPlay()
 void APlayerActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	AddActorLocalOffset(MovementVector * DeltaTime);
 }
 
 void APlayerActor::MoveRight()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Move Right!!"))
-	OurVisibleMesh->AddForce(FVector(0.f, MaxForce, 0.f));
+	MovementVector = (FVector(0.f, MaxSpeed, 0.f));
 }
 
 void APlayerActor::MoveLeft()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Move Left!!"))
-	OurVisibleMesh->AddForce(FVector(0.f, -MaxForce, 0.f));
+	MovementVector = (FVector(0.f, -MaxSpeed, 0.f));
 }
 
 void APlayerActor::MoveForward()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Move Forward!!"))
-	OurVisibleMesh->AddForce(FVector(MaxForce, 0.f, 0.f));
+		MovementVector = (FVector(MaxSpeed, 0.f, 0.f));
 }
 
 void APlayerActor::MoveBackward()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Move Back!!"))
-	OurVisibleMesh->AddForce(FVector(-MaxForce, 0.f, 0.f));
+		MovementVector = (FVector(-MaxSpeed, 0.f, 0.f));
 }
 
 void APlayerActor::Shoot()

@@ -77,3 +77,7 @@ DerivedDataCache/*
 #vscode
 .vscode/
 *.code-workspace
+
+#VR headset
+Config/steamvr_ue_editor_app.json
+Config/SteamVRBindings/
