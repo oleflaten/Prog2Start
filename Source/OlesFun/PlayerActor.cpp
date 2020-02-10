@@ -3,6 +3,7 @@
 
 #include "PlayerActor.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SphereComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Components/InputComponent.h"
 #include "BulletActor.h"
@@ -14,8 +15,14 @@ APlayerActor::APlayerActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+    // Set up the collider for this object
+	OurCollider = CreateDefaultSubobject<USphereComponent>(TEXT("PlayerCollider"));
+  	OurCollider->SetSphereRadius(50.f); //Diameter will be 100 = default mesh-size
+	OurCollider->SetGenerateOverlapEvents(true);
+	RootComponent = OurCollider;
+
 	OurVisibleMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleMesh"));
-	RootComponent = OurVisibleMesh;
+	OurVisibleMesh->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -77,6 +84,17 @@ void APlayerActor::Shoot()
 	{
 		World->SpawnActor<ABulletActor>(BulletBlueprint, GetActorLocation() + 
 			FVector(BulletSpawnDistance, 0.f, 0.f), GetActorRotation());
+	}
+}
+
+void APlayerActor::ImHit()
+{
+	Lifes--;
+
+	if (Lifes < 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Player says: I'm dead!!"))
+		Destroy();
 	}
 }
 

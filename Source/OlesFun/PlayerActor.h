@@ -20,6 +20,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* OurVisibleMesh;
 
+	UPROPERTY(VisibleAnywhere)
+	class USphereComponent* OurCollider;
+
 	UPROPERTY(EditAnywhere)
 	float MaxSpeed = 200.f;
 
@@ -34,6 +37,11 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
 	FVector MovementVector{};
+
+	void ImHit();
+
+	UPROPERTY(EditAnywhere, Category = "Gameplay")
+	int Lifes{3};
 
 protected:
 	// Called when the game starts or when spawned
