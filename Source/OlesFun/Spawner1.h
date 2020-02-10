@@ -22,6 +22,13 @@ public:
     
     UPROPERTY(EditAnywhere, Category = "Spawn-parameters")
     float TimeBetweenSpawning = 4.f;
+
+    UPROPERTY(EditAnywhere, Category = "Spawn-parameters")
+    float TimeBeforeStopSpawning = 15.f;
+
+    float TimeEnemiesHaveSpawned{0.f};
+
+
     
 protected:
 	// Called when the game starts or when spawned

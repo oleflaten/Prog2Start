@@ -4,6 +4,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "EnemyActor.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABulletActor::ABulletActor()
@@ -60,7 +61,7 @@ void ABulletActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
     //    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplotionFX, GetTransform(), true);
 
     //    //SoundFX:  - you must the set up a ExplotionSound actor first!
-    //    UGameplayStatics::PlaySoundAtLocation(GetWorld(), ExplotionSound, GetActorLocation());
+        UGameplayStatics::PlaySoundAtLocation(GetWorld(), ExplotionSound, GetActorLocation());
 
         //Destroy Bullet:
         Destroy();

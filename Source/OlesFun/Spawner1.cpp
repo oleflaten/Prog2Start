@@ -24,19 +24,25 @@ void ASpawner1::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
     
+    TimeEnemiesHaveSpawned += DeltaTime;
+
     //Adding time to the TimeSinceLastSpawn, so we can spawn at TimeBetweenSpawning
     TimeSinceLastSpawn += DeltaTime;
-    
-    if (TimeBetweenSpawning < TimeSinceLastSpawn)
+
+    if(TimeEnemiesHaveSpawned < TimeBeforeStopSpawning)
     {
-        UWorld* World = GetWorld();    //Get the game world ( our level )
-        if (World)                    //test that it exists
+    
+        if (TimeBetweenSpawning < TimeSinceLastSpawn)
         {
-            World->SpawnActor<AEnemyActor>(EnemyBlueprint, GetActorLocation(), GetActorRotation());
-        }
+            UWorld* World = GetWorld();    //Get the game world ( our level )
+            if (World)                    //test that it exists
+            {
+                World->SpawnActor<AEnemyActor>(EnemyBlueprint, GetActorLocation(), GetActorRotation());
+            }
         
-        //Resetting TimeSinceLastSpawn for next spawn
-        TimeSinceLastSpawn = 0.f;
+            //Resetting TimeSinceLastSpawn for next spawn
+            TimeSinceLastSpawn = 0.f;
+        }
     }
 
 }

@@ -32,6 +32,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	float Speed{ 400.f };
 
+	UPROPERTY(EditAnywhere, Category = "Audio")
+    class USoundBase* ExplotionSound;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
