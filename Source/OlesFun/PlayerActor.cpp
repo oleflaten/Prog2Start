@@ -59,44 +59,56 @@ void APlayerActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	    // Handle movement based on our "MoveX" and "MoveY" axes
   
-  if (!MovementVector.IsZero())
-  {
-      FVector NewLocation = GetActorLocation() + (MovementVector * DeltaTime);
-      SetActorLocation(NewLocation);
-  }
+	if (!MovementVector.IsZero())
+  	{
+		FVector NewLocation = GetActorLocation() + (MovementVector * DeltaTime);
+		SetActorLocation(NewLocation);
+  	}
+
+	//Super crude win state
+	if (EnemiesHit >= 10)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Player says: I WON!!"))
+		this->SetActorHiddenInGame(true);
+	}
 }
 
 void APlayerActor::Move_XAxis(float AxisValue)
 {
-    UE_LOG(LogTemp, Warning, TEXT("X speed %f!!"), AxisValue)
+    //UE_LOG(LogTemp, Warning, TEXT("X speed %f!!"), AxisValue)
 	MovementVector.X = MaxSpeed * AxisValue;
 }
 
 void APlayerActor::Move_YAxis(float AxisValue)
 {
-    UE_LOG(LogTemp, Warning, TEXT("Y speed %f!!"), AxisValue)
+    //UE_LOG(LogTemp, Warning, TEXT("Y speed %f!!"), AxisValue)
 	MovementVector.Y = MaxSpeed * AxisValue;
 }
 
 void APlayerActor::Shoot()
 {
-
-	UWorld* World = GetWorld();	//Get the game world ( our level ) 
-	if (World)					//test that it exists
+	//Shoot only if not lost or won
+	if (Lives > 0 && EnemiesHit < 10)
 	{
-		World->SpawnActor<ABulletActor>(BulletBlueprint, GetActorLocation() + 
+		UWorld* World = GetWorld();	//Get the game world ( our level ) 
+		if (World)					//test that it exists
+		{
+			World->SpawnActor<ABulletActor>(BulletBlueprint, GetActorLocation() + 
 			FVector(BulletSpawnDistance, 0.f, 0.f), GetActorRotation());
+		}
 	}
 }
 
 void APlayerActor::ImHit()
 {
-	Lifes--;
+	Lives--;
 
-	if (Lifes < 0)
+	//Super crude loose state
+	if (Lives <= 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Player says: I'm dead!!"))
-		Destroy();
+		//Destroy();	//can not do this because then camera is lost
+		this->SetActorHiddenInGame(true);
 	}
 }
 

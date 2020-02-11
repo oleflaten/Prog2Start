@@ -5,6 +5,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "EnemyActor.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
+#include "PlayerActor.h"
 
 // Sets default values
 ABulletActor::ABulletActor()
@@ -52,6 +54,8 @@ void ABulletActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
     if (OtherActor->IsA(AEnemyActor::StaticClass()))
     {
         OtherActor->Destroy();
+        
+        Cast<APlayerActor>(GetWorld()->GetFirstPlayerController()->GetPawn())->EnemiesHit++;
 
         //Alternative method to inform the enemy that it is hit
         //For instantce if the enemy has health that should be reduced

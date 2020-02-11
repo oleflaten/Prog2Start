@@ -44,8 +44,11 @@ public:
 
 	void ImHit();
 
-	UPROPERTY(EditAnywhere, Category = "Gameplay")
-	int Lifes{3};
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	int Lives{3};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	int EnemiesHit{0};
 
 protected:
 	// Called when the game starts or when spawned
