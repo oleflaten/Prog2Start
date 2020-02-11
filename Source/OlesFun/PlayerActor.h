@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Pawn.h"
 #include "PlayerActor.generated.h"
 
 UCLASS()
-class OLESFUN_API APlayerActor : public AActor
+class OLESFUN_API APlayerActor : public APawn
 {
 	GENERATED_BODY()
 	
@@ -16,6 +16,10 @@ public:
 	APlayerActor();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* OurVisibleMesh;
@@ -48,9 +52,7 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	void MoveRight();
-	void MoveLeft();
-	void MoveForward();
-	void MoveBackward();
+	void Move_XAxis(float AxisValue);
+	void Move_YAxis(float AxisValue);
 	void Shoot();
 };

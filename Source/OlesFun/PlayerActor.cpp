@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Components/InputComponent.h"
+#include "Camera/CameraComponent.h"
 #include "BulletActor.h"
 #include "GameFramework/PlayerController.h"
 
@@ -32,16 +33,23 @@ void APlayerActor::BeginPlay()
 
 	UE_LOG(LogTemp, Warning, TEXT("Hello World!!"))
 
+   	AutoPossessPlayer = EAutoReceiveInput::Player0;
+	
 	APlayerController* OurPlayerController = GetWorld()->GetFirstPlayerController();
-	EnableInput(OurPlayerController);
 
 	if (OurCamera)
 		OurPlayerController->SetViewTarget(OurCamera);
 
-	InputComponent->BindAction("MoveRight", IE_Pressed, this, &APlayerActor::MoveRight);
-	InputComponent->BindAction("MoveLeft", IE_Pressed, this, &APlayerActor::MoveLeft);
-	InputComponent->BindAction("MoveForward", IE_Pressed, this, &APlayerActor::MoveForward);
-	InputComponent->BindAction("MoveBackWard", IE_Pressed, this, &APlayerActor::MoveBackward);
+}
+
+// Called to bind functionality to input
+void APlayerActor::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+    // Respond every frame to the values of our two movement axes, "MoveX" and "MoveY".
+    InputComponent->BindAxis("MoveForward", this, &APlayerActor::Move_XAxis);
+    InputComponent->BindAxis("MoveRight", this, &APlayerActor::Move_YAxis);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &APlayerActor::Shoot);
 }
 
@@ -49,31 +57,25 @@ void APlayerActor::BeginPlay()
 void APlayerActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	AddActorLocalOffset(MovementVector * DeltaTime);
+	    // Handle movement based on our "MoveX" and "MoveY" axes
+  
+  if (!MovementVector.IsZero())
+  {
+      FVector NewLocation = GetActorLocation() + (MovementVector * DeltaTime);
+      SetActorLocation(NewLocation);
+  }
 }
 
-void APlayerActor::MoveRight()
+void APlayerActor::Move_XAxis(float AxisValue)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Move Right!!"))
-	MovementVector = (FVector(0.f, MaxSpeed, 0.f));
+    UE_LOG(LogTemp, Warning, TEXT("X speed %f!!"), AxisValue)
+	MovementVector.X = MaxSpeed * AxisValue;
 }
 
-void APlayerActor::MoveLeft()
+void APlayerActor::Move_YAxis(float AxisValue)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Move Left!!"))
-	MovementVector = (FVector(0.f, -MaxSpeed, 0.f));
-}
-
-void APlayerActor::MoveForward()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Move Forward!!"))
-		MovementVector = (FVector(MaxSpeed, 0.f, 0.f));
-}
-
-void APlayerActor::MoveBackward()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Move Back!!"))
-		MovementVector = (FVector(-MaxSpeed, 0.f, 0.f));
+    UE_LOG(LogTemp, Warning, TEXT("Y speed %f!!"), AxisValue)
+	MovementVector.Y = MaxSpeed * AxisValue;
 }
 
 void APlayerActor::Shoot()
