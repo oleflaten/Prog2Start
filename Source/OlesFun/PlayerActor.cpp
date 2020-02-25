@@ -4,6 +4,7 @@
 #include "PlayerActor.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Components/InputComponent.h"
 #include "Camera/CameraComponent.h"
@@ -24,6 +25,11 @@ APlayerActor::APlayerActor()
 
 	OurVisibleMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisibleMesh"));
 	OurVisibleMesh->SetupAttachment(RootComponent);
+
+	OurAttack = CreateDefaultSubobject<UBoxComponent>(TEXT("PlayerAttack"));
+  	OurAttack->InitBoxExtent(FVector(300.f, 300.f, 300.f));
+	OurAttack->SetupAttachment(RootComponent);
+	OurAttack->SetGenerateOverlapEvents(false);
 }
 
 // Called when the game starts or when spawned
@@ -51,6 +57,7 @@ void APlayerActor::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
     InputComponent->BindAxis("MoveForward", this, &APlayerActor::Move_XAxis);
     InputComponent->BindAxis("MoveRight", this, &APlayerActor::Move_YAxis);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &APlayerActor::Shoot);
+	InputComponent->BindAction("Attack", IE_Pressed, this, &APlayerActor::Attack);
 }
 
 // Called every frame
@@ -71,6 +78,8 @@ void APlayerActor::Tick(float DeltaTime)
 		UE_LOG(LogTemp, Warning, TEXT("Player says: I WON!!"))
 		this->SetActorHiddenInGame(true);
 	}
+
+	//OurAttack->SetGenerateOverlapEvents(false);
 }
 
 void APlayerActor::Move_XAxis(float AxisValue)
@@ -97,6 +106,12 @@ void APlayerActor::Shoot()
 			FVector(BulletSpawnDistance, 0.f, 0.f), GetActorRotation());
 		}
 	}
+	OurAttack->SetGenerateOverlapEvents(false);
+}
+
+void APlayerActor::Attack()
+{
+	OurAttack->SetGenerateOverlapEvents(true);
 }
 
 void APlayerActor::ImHit()

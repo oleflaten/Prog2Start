@@ -27,6 +27,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class USphereComponent* OurCollider;
 
+	UPROPERTY(VisibleAnywhere)
+	class UBoxComponent* OurAttack;
+
 	UPROPERTY(EditAnywhere)
 	float MaxSpeed = 200.f;
 
@@ -61,4 +64,5 @@ private:
 	void Move_XAxis(float AxisValue);
 	void Move_YAxis(float AxisValue);
 	void Shoot();
+	void Attack();
 };
