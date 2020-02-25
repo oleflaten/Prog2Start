@@ -10,6 +10,7 @@
 #include "Camera/CameraComponent.h"
 #include "BulletActor.h"
 #include "GameFramework/PlayerController.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APlayerActor::APlayerActor()
@@ -79,7 +80,14 @@ void APlayerActor::Tick(float DeltaTime)
 		this->SetActorHiddenInGame(true);
 	}
 
-	//OurAttack->SetGenerateOverlapEvents(false);
+	//Set the attack paramteres
+	if (attackTime > 0.f)
+		attackTime -= DeltaTime;
+
+	if (attackTime <= 0.f)
+	{
+		OurAttack->SetGenerateOverlapEvents(false);
+	}
 }
 
 void APlayerActor::Move_XAxis(float AxisValue)
@@ -106,12 +114,17 @@ void APlayerActor::Shoot()
 			FVector(BulletSpawnDistance, 0.f, 0.f), GetActorRotation());
 		}
 	}
-	OurAttack->SetGenerateOverlapEvents(false);
 }
 
 void APlayerActor::Attack()
 {
 	OurAttack->SetGenerateOverlapEvents(true);
+    //PartikkelFX:
+	FTransform tempTransform = GetTransform();
+	tempTransform.MultiplyScale3D(FVector(10.f));
+    UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplotionFX, tempTransform, true);
+
+	attackTime = 2.f;
 }
 
 void APlayerActor::ImHit()

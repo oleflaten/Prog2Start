@@ -56,6 +56,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	int EnemiesHit{0};
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+    class UParticleSystem *ExplotionFX{nullptr};
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -65,4 +68,6 @@ private:
 	void Move_YAxis(float AxisValue);
 	void Shoot();
 	void Attack();
+
+	float attackTime{2.f};
 };
