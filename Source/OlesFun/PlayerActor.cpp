@@ -101,8 +101,13 @@ void APlayerActor::Shoot()
 
 void APlayerActor::ImHit()
 {
-	Lives--;
+	Health -= 10.f;
 
+	if (Health <= 0.f)
+	{
+		Lives--;
+		Health = 100.f;
+	}
 	//Super crude loose state
 	if (Lives <= 0)
 	{

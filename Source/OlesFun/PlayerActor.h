@@ -48,6 +48,9 @@ public:
 	int Lives{3};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	float Health{100.f};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	int EnemiesHit{0};
 
 protected:

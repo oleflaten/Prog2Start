@@ -63,7 +63,7 @@ void AEnemyActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
         //SoundFX:  - you must the set up a ExplotionSound actor first!
         UGameplayStatics::PlaySoundAtLocation(GetWorld(), CrashSound, GetActorLocation());
 
-        //Destroy Bullet:
+        //Destroy Enemy:
         Destroy();
     }
 }
